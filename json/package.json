@@ -1,0 +1,42 @@
+[
+    {
+        "trip": "Andaman Trip",
+        "duration": "5 Nights/4 Days",
+        "location": "India",
+        "heading": "Why Andaman and Nicobar Islands?",
+        "description": "The Andaman and Nicobar Islands are a beautiful archipelago located in the Bay of Bengal, and are a popular tourist destination. With crystal clear turquoise waters, pristine beaches, lush green forests, and abundant marine life, the Andaman and Nicobar Islands offer a tropical paradise for visitors. The Islands are rich in history, with a mix of colonial and indigenous cultures, and offer many opportunities for adventure and exploration, including snorkeling, diving, trekking, and wildlife watching. Whether you are looking for a romantic getaway, an action-packed adventure, or a peaceful escape from the hustle and bustle of city life, the Andaman and Nicobar Islands are the perfect destination for a memorable trip.",
+        "rating": 4.0,
+        "price": 20000.0,
+        "favourite": true
+    },
+    {
+        "trip": "Rajasthan Trip",
+        "duration": "5 Nights/4 Days",
+        "location": "India",
+        "heading": "Why Rajasthan Trip?",
+        "description": "Rajasthan, located in the northwestern region of India, is a land steeped in history and rich cultural heritage. The state is renowned for its magnificent forts, grand palaces, and stunning havelis (traditional Indian mansions) that serve as a testament to its regal past. Visitors to Rajasthan can expect to be enchanted by its vibrant colors, bustling bazaars, and rich music and dance traditions. The state is also known for its unique desert landscapes, dotted with lakes and dotted with sand dunes, making it a perfect destination for those seeking a unique and off-beat travel experience. Whether you are interested in exploring the rich cultural heritage of Rajasthan, marveling at its stunning architecture, or simply enjoying its warm hospitality, Rajasthan is the perfect destination for a memorable and enriching trip.",
+        "rating": 3.0,
+        "price": 5000.0,
+        "favourite": true
+    },
+    {
+        "trip": "Kasol Trip",
+        "duration": "5 Nights/4 Days",
+        "location": "India",
+        "heading": "Why Kasol Trip?",
+        "description": "Kasol is a small village located in the Parvati Valley of Himachal Pradesh, India. It is known for its picturesque landscapes, surrounded by towering mountains and lush green forests. The village has become a popular destination for backpackers and nature lovers, who come here to escape the hustle and bustle of city life and enjoy the peaceful atmosphere. Kasol is also known for its vibrant cafe culture, with many cafes and restaurants serving delicious local cuisine and offering stunning views of the surrounding mountains. The area is also a popular spot for trekking, with several trails leading through the forested hills and offering breathtaking panoramic views of the valley. Whether you are looking for a relaxing getaway or an adventurous outdoor experience, Kasol is the perfect destination for a memorable trip.",
+        "rating": 5.0,
+        "price": 6000.0,
+        "favourite": true
+    },
+    {
+        "trip": "Ladakh Trip",
+        "duration": "5 Nights/4 Days",
+        "location": "India",
+        "heading": "Why Ladakh Trip?",
+        "description": "Ladakh is a region in the northernmost part of India, located in the state of Jammu and Kashmir. It is known for its stark, rugged beauty, with snow-capped mountains, barren deserts, and crystal-clear rivers and lakes. Ladakh is also a cultural hub, with a rich Buddhist heritage and a unique mix of Tibetan and Indian influences. Visitors to Ladakh can expect to be captivated by its natural beauty and cultural richness, with many opportunities for adventure and exploration. Some popular activities in the region include trekking, river rafting, and wildlife watching, as well as visiting monasteries and cultural landmarks such as the Hemis Monastery and the Alchi Choskor Temple. Whether you are seeking a spiritual journey, an adrenaline-fueled adventure, or simply a chance to escape the crowds and experience the peace and quiet of the Himalayas, Ladakh is the perfect destination for a truly unforgettable trip.",
+        "rating": 5.0,
+        "price": 10000.0,
+        "favourite": true
+    }
+]

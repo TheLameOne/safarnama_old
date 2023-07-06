@@ -35,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollViewController = ScrollController();
   final fireStore =
       FirebaseFirestore.instance.collection("Packages").snapshots();
-  final fav = FirebaseFirestore.instance
-      .collection("Users")
-      .where("phonenumber", isEqualTo: userId)
-      .snapshots();
+  // final fav = FirebaseFirestore.instance
+  //     .collection("Users")
+  //     .where("phonenumber", isEqualTo: userId)
+  //     .snapshots();
 
   bool visible = false;
   bool search = false;
@@ -234,35 +234,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     PackageOverviewScreen(
-                                                  description: snapshot
-                                                      .data
-                                                      ?.docs[i]
-                                                          ["packagedescription"]
+                                                  description: snapshot.data
+                                                      ?.docs[i]["description"]
                                                       .toString(),
                                                   duration: snapshot
-                                                      .data
-                                                      ?.docs[i]
-                                                          ["packagetraveltime"]
+                                                      .data?.docs[i]["duration"]
                                                       .toString(),
                                                   favourite: false,
                                                   heading: snapshot
                                                       .data
                                                       ?.docs[i]
-                                                          ["packageheading"]
+                                                          ["headingOfPackage"]
                                                       .toString(),
-                                                  location: "India",
-                                                  price: snapshot.data
-                                                      ?.docs[i]["packageprice"]
+                                                  location: snapshot
+                                                      .data?.docs[i]["location"]
+                                                      .toString(),
+                                                  price: snapshot
+                                                      .data?.docs[i]["price"]
                                                       .toDouble(),
-                                                  rating: 4.0,
+                                                  rating: snapshot
+                                                      .data?.docs[i]["rating"]
+                                                      .toDouble(),
                                                   trip: snapshot.data
-                                                      ?.docs[i]["packagename"]
+                                                      ?.docs[i]["packageName"]
                                                       .toString(),
                                                   packageid: snapshot.data
-                                                      ?.docs[i]["packageid"]
+                                                      ?.docs[i]["packageId"]
                                                       .toString(),
                                                   packagename: snapshot.data
-                                                      ?.docs[i]["packagename"]
+                                                      ?.docs[i]["packageName"]
                                                       .toString(),
                                                 ),
                                               ),
@@ -272,21 +272,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: PackageCard(
                                             // trip: packages[i].packagename,
                                             trip: snapshot
-                                                .data?.docs[i]["packagename"]
+                                                .data?.docs[i]["packageName"]
                                                 .toString(),
-                                            duration: snapshot.data
-                                                ?.docs[i]["packagetraveltime"]
+                                            duration: snapshot
+                                                .data?.docs[i]["duration"]
                                                 .toString(),
-                                            location: "India",
-                                            heading: snapshot
-                                                .data?.docs[i]["packageheading"]
+                                            location: snapshot
+                                                .data?.docs[i]["location"]
+                                                .toString(),
+                                            heading: snapshot.data
+                                                ?.docs[i]["headingOfPackage"]
                                                 .toString(),
                                             description: snapshot
-                                                .data?.docs[i]["packagename"]
+                                                .data?.docs[i]["packageName"]
                                                 .toString(),
-                                            rating: 4.0,
+                                            rating: snapshot
+                                                .data?.docs[i]["rating"]
+                                                .toDouble(),
                                             price: snapshot
-                                                .data?.docs[i]["packageprice"]
+                                                .data?.docs[i]["price"]
                                                 .toDouble(),
                                             favourite: false),
                                       )

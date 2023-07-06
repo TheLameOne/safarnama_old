@@ -363,40 +363,46 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                                           description: snapshot
                                                               .data
                                                               ?.docs[i][
-                                                                  "packagedescription"]
+                                                                  "description"]
                                                               .toString(),
                                                           duration: snapshot
                                                               .data
-                                                              ?.docs[i][
-                                                                  "packagetraveltime"]
+                                                              ?.docs[i]
+                                                                  ["duration"]
                                                               .toString(),
                                                           favourite: false,
                                                           heading: snapshot
                                                               .data
                                                               ?.docs[i][
-                                                                  "packageheading"]
+                                                                  "headingOfPackage"]
                                                               .toString(),
-                                                          location: "India",
-                                                          price: snapshot
+                                                          location: snapshot
                                                               .data
-                                                              ?.docs[i][
-                                                                  "packageprice"]
+                                                              ?.docs[i]
+                                                                  ["location"]
+                                                              .toString(),
+                                                          price: snapshot.data
+                                                              ?.docs[i]["price"]
                                                               .toDouble(),
-                                                          rating: 4.0,
+                                                          rating: snapshot
+                                                              .data
+                                                              ?.docs[i]
+                                                                  ["rating"]
+                                                              .toDouble(),
                                                           trip: snapshot
                                                               .data
                                                               ?.docs[i][
-                                                                  "packagename"]
+                                                                  "packageName"]
                                                               .toString(),
                                                           packageid: snapshot
                                                               .data
                                                               ?.docs[i]
-                                                                  ["packageid"]
+                                                                  ["packageId"]
                                                               .toString(),
                                                           packagename: snapshot
                                                               .data
                                                               ?.docs[i][
-                                                                  "packagename"]
+                                                                  "packageName"]
                                                               .toString(),
                                                         ),
                                                       ),
@@ -406,27 +412,26 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                                 child: PackageCard(
                                                     // trip: packages[i].packagename,
                                                     trip: snapshot.data
-                                                        ?.docs[i]["packagename"]
+                                                        ?.docs[i]["packageName"]
                                                         .toString(),
-                                                    duration: snapshot
-                                                        .data
-                                                        ?.docs[i][
-                                                            "packagetraveltime"]
+                                                    duration: snapshot.data
+                                                        ?.docs[i]["duration"]
                                                         .toString(),
-                                                    location: "India",
+                                                    location: snapshot.data
+                                                        ?.docs[i]["location"]
+                                                        .toString(),
                                                     heading: snapshot
                                                         .data
                                                         ?.docs[i]
-                                                            ["packageheading"]
+                                                            ["headingOfPackage"]
                                                         .toString(),
                                                     description: snapshot.data
-                                                        ?.docs[i]["packagename"]
+                                                        ?.docs[i]["packageName"]
                                                         .toString(),
-                                                    rating: 4.0,
-                                                    price: snapshot
-                                                        .data
-                                                        ?.docs[i]
-                                                            ["packageprice"]
+                                                    rating: snapshot
+                                                        .data?.docs[i]["rating"]
+                                                        .toDouble(),
+                                                    price: snapshot.data?.docs[i]["price"]
                                                         .toDouble(),
                                                     favourite: false),
                                               )

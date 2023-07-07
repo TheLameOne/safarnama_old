@@ -114,7 +114,7 @@ class PlanCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(
                           top: 2, bottom: 2, left: 8, right: 8),
-                      child: Text('$discount% OFF',
+                      child: Text('${discount?.truncate()}% OFF',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white)),

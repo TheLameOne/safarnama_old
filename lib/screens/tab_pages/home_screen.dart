@@ -345,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
               child: StreamBuilder<QuerySnapshot>(
                   stream: fireStore,
                   builder: (BuildContext context, snapshot) {
@@ -363,21 +363,65 @@ class _HomeScreenState extends State<HomeScreen> {
                               Padding(
                                   padding:
                                       const EdgeInsets.only(top: 4, bottom: 4),
-                                  child: PlanCard(
-                                    duration: snapshot.data?.docs[i]["duration"]
-                                        .toString(),
-                                    heading: snapshot
-                                        .data?.docs[i]["packageName"]
-                                        .toString(),
-                                    description: snapshot
-                                        .data?.docs[i]["headingOfPackage"]
-                                        .toString(),
-                                    price: snapshot.data?.docs[i]["price"]
-                                        .toDouble(),
-                                    discount: snapshot.data?.docs[i]["discount"]
-                                        .toDouble(),
-                                    rating: snapshot.data?.docs[i]["rating"]
-                                        .toDouble(),
+                                  child: InkWell(
+                                    onTap: () {
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PackageOverviewScreen(
+                                              description: snapshot
+                                                  .data?.docs[i]["description"]
+                                                  .toString(),
+                                              duration: snapshot
+                                                  .data?.docs[i]["duration"]
+                                                  .toString(),
+                                              favourite: false,
+                                              heading: snapshot.data
+                                                  ?.docs[i]["headingOfPackage"]
+                                                  .toString(),
+                                              location: snapshot
+                                                  .data?.docs[i]["location"]
+                                                  .toString(),
+                                              price: snapshot
+                                                  .data?.docs[i]["price"]
+                                                  .toDouble(),
+                                              rating: snapshot
+                                                  .data?.docs[i]["rating"]
+                                                  .toDouble(),
+                                              trip: snapshot
+                                                  .data?.docs[i]["packageName"]
+                                                  .toString(),
+                                              packageid: snapshot
+                                                  .data?.docs[i]["packageId"]
+                                                  .toString(),
+                                              packagename: snapshot
+                                                  .data?.docs[i]["packageName"]
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: PlanCard(
+                                      duration: snapshot
+                                          .data?.docs[i]["duration"]
+                                          .toString(),
+                                      heading: snapshot
+                                          .data?.docs[i]["packageName"]
+                                          .toString(),
+                                      description: snapshot
+                                          .data?.docs[i]["headingOfPackage"]
+                                          .toString(),
+                                      price: snapshot.data?.docs[i]["price"]
+                                          .toDouble(),
+                                      discount: snapshot
+                                          .data?.docs[i]["discount"]
+                                          .toDouble(),
+                                      rating: snapshot.data?.docs[i]["rating"]
+                                          .toDouble(),
+                                    ),
                                   ))
                           ]),
                         ),

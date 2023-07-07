@@ -40,9 +40,8 @@ class _PackagesScreenState extends State<PackagesScreen> {
                 padding:
                     const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
                 child: PlanCard(
-                  days: 2,
-                  night: 1,
-                  title: 'Experience Kerela',
+                  duration: "duration",
+                  heading: 'Experience Kerela',
                   description: 'A journey into the nature',
                   price: 20000,
                   discount: 20,

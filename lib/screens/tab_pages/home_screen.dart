@@ -343,99 +343,75 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: fireStore,
+                  builder: (BuildContext context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                        width: size.width - 32,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(children: [
+                            for (var i = 0; i < snapshot.data!.size; i++)
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 4, bottom: 4),
+                                  child: PlanCard(
+                                    duration: snapshot.data?.docs[i]["duration"]
+                                        .toString(),
+                                    heading: snapshot
+                                        .data?.docs[i]["packageName"]
+                                        .toString(),
+                                    description: snapshot
+                                        .data?.docs[i]["headingOfPackage"]
+                                        .toString(),
+                                    price: snapshot.data?.docs[i]["price"]
+                                        .toDouble(),
+                                    discount: snapshot.data?.docs[i]["discount"]
+                                        .toDouble(),
+                                    rating: snapshot.data?.docs[i]["rating"]
+                                        .toDouble(),
+                                  ))
+                          ]),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      print("error 2");
+                      return Center(child: Text(snapshot.error.toString()));
+                    } else {
+                      print("Error 3");
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
+            ),
+          ),
           SliverPersistentHeader(
             pinned: true,
             delegate: PersistentHeader(
               add: 50.0,
               // widget: Text("Harsh")
-              widget: Column(
-                children: [
-                  // Visibility(
-                  //   visible: search,
-                  //   child: Container(
-                  //     color: Colors.white,
-                  //     child: Row(
-                  //       children: [
-                  //         // Search bar
-                  //         CustomSearchField(
-                  //             width: size.width * 0.72,
-                  //             height: 50,
-                  //             labelText: '',
-                  //             border: true,
-                  //             textColor: Colors.grey,
-                  //             hintText: 'Where you want to go?',
-                  //             initialValue: '',
-                  //             onChanged: (val) {}),
-                  //         // Search Button
-                  //         CustomSearchButton(
-                  //           height: 50,
-                  //           labelText: 'Search',
-                  //           onTap: () {},
-                  //           containerColor: Colors.yellow,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // Visibility(
-                  //   visible: search,
-                  //   child: Container(
-                  //       color: Colors.white,
-                  //       height: 36,
-                  //       width: 390,
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.only(top: 4),
-                  //         child: CupertinoSearchTextField(
-                  //           onChanged: (String value) {
-                  //             print(
-                  //                 'The text has changed to: $value');
-                  //           },
-                  //           onSubmitted: (String value) {
-                  //             print('Submitted text: $value');
-                  //           },
-                  //         ),
-                  //       )),
-                  // ),
-                  Container(
-                      color: Colors.white,
-                      height: 64,
-                      child: ListView(
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            for (int i = 0; i < categories.length; i++)
-                              CategoriesCard(
-                                  categories: categories[i], color: colors[i])
-                          ])),
-                ],
-              ),
+              widget: Container(
+                  color: Colors.white,
+                  height: 64,
+                  child: ListView(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        for (int i = 0; i < categories.length; i++)
+                          CategoriesCard(
+                              categories: categories[i], color: colors[i])
+                      ])),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              width: size.width - 32,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(children: [
-                  for (var j = 0; j < 10; j++)
-                    Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: PlanCard(
-                          days: 2,
-                          night: 1,
-                          title: 'Experience Kerela',
-                          description: 'A journey into the nature',
-                          price: 20000,
-                          discount: 20,
-                          rating: 4,
-                        ))
-                ]),
-              ),
-            ),
-          )
         ]));
   }
 }

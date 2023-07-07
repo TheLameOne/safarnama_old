@@ -3,22 +3,20 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class PlanCard extends StatelessWidget {
-  final int days;
-  final int night;
-  final String title;
-  final String description;
-  final int rating;
-  final double price;
-  final int discount;
+  String? heading;
+  String? description;
+  String? duration;
+  double? rating;
+  double? price;
+  double? discount;
 
   PlanCard(
-      {this.days = 0,
-      this.night = 0,
-      required this.title,
-      required this.description,
-      this.rating = 0,
-      required this.price,
-      this.discount = 0});
+      {this.duration,
+      this.heading,
+      this.description,
+      this.rating,
+      this.price,
+      this.discount});
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +46,16 @@ class PlanCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  duration(days, night),
+                  duration!,
                   style: TextStyle(
                       color: Colors.black54, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  title,
+                  heading!,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  description,
+                  description!,
                   style: TextStyle(color: Colors.black54, fontSize: 12),
                 ),
                 Row(
@@ -65,7 +63,7 @@ class PlanCard extends StatelessWidget {
                     Row(
                       children: [
                         for (var i = 0; i < 5; i++)
-                          (i < rating)
+                          (i < rating!)
                               ? Icon(
                                   Icons.star,
                                   color: Colors.amber,
@@ -100,7 +98,7 @@ class PlanCard extends StatelessWidget {
                           IconData(0xf05db, fontFamily: 'MaterialIcons'),
                           size: 16,
                         ),
-                        Text(price.toInt().toString(),
+                        Text(price!.toInt().toString(),
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
@@ -108,7 +106,7 @@ class PlanCard extends StatelessWidget {
                         style: TextStyle(color: Colors.black54, fontSize: 12)),
                   ],
                 ),
-                if (discount > 0)
+                if (discount! > 0)
                   Container(
                     decoration: BoxDecoration(
                         color: Colors.orange,
@@ -130,16 +128,4 @@ class PlanCard extends StatelessWidget {
       ),
     );
   }
-}
-
-String duration(int days, int night) {
-  String duration = "";
-  if (days == 0) {
-    duration = "$night NIGHT";
-  } else if (night == 0) {
-    duration = "$days DAYS";
-  } else {
-    duration = "$days DAYS + $night NIGHT";
-  }
-  return duration;
 }

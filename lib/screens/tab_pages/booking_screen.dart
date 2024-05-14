@@ -290,7 +290,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                                           decoration: BoxDecoration(
                                                               image: DecorationImage(
                                                                   image: NetworkImage(
-                                                                      'https://images.pexels.com/photos/11060852/pexels-photo-11060852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+                                                                      'https://www.agoda.com/wp-content/uploads/2023/02/Goa-overview-things-to-do-in-goa.jpg'),
                                                                   fit: BoxFit
                                                                       .cover),
                                                               borderRadius:

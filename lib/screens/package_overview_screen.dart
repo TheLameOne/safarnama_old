@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../custom/PackageCard.dart';
-import '../models/package_model.dart';
 import '../utils/styles.dart';
 import 'booking/checkout_screen.dart';
 
@@ -14,9 +19,12 @@ class PackageOverviewScreen extends StatefulWidget {
   String? description;
   double? rating;
   double? price;
-  bool? favourite;
+  bool fav;
   String? packagename;
   String? packageid;
+  String? maps;
+  String? image;
+  String? gallery;
 
   PackageOverviewScreen(
       {this.trip,
@@ -25,10 +33,13 @@ class PackageOverviewScreen extends StatefulWidget {
       this.description,
       this.rating,
       this.price,
-      this.favourite,
+      required this.fav,
       this.location,
       this.packageid,
-      this.packagename});
+      this.packagename,
+      this.maps,
+      this.image,
+      this.gallery});
 
   @override
   State<PackageOverviewScreen> createState() => _PackageOverviewScreenState();
@@ -41,12 +52,13 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
   final ScrollController _scrollViewController = ScrollController();
 
   bool scrolled = false;
-
+  late Future<List<String>> links;
   TabController? tabController;
 
   @override
   void initState() {
-    tabController = TabController(length: 3, vsync: this);
+    links = getAllImageUrls(widget.gallery!);
+    tabController = TabController(length: 2, vsync: this);
     _scrollViewController.addListener(() {
       setState(() {
         scrolled = _scrollViewController.offset > 300 ? true : false;
@@ -69,7 +81,7 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
 
     return Scaffold(
       body: DefaultTabController(
-        length: 3,
+        length: 2,
         child: CustomScrollView(controller: _scrollViewController, slivers: [
           SliverAppBar(
             backgroundColor: (!scrolled) ? Colors.white : Styles.primaryColor,
@@ -86,8 +98,7 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                   borderRadius:
                       BorderRadius.only(bottomRight: Radius.circular(50)),
                   image: DecorationImage(
-                    image: NetworkImage(
-                        'https://images.pexels.com/photos/6465964/pexels-photo-6465964.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
+                    image: NetworkImage(widget.image!),
                     fit: BoxFit.cover,
                   ),
                   // borderRadius:
@@ -121,23 +132,30 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                     ),
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8),
-                                          child: Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
+                                    InkWell(
+                                      onTap: () {
+                                        // openMap(26.9124, 75.7873);
+                                        openMapLoc(widget.maps!);
+                                        print(widget.maps!);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 8),
+                                            child: Icon(
+                                              Icons.location_on,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          widget.location!,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white),
-                                        )
-                                      ],
+                                          Text(
+                                            widget.location!,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ]),
                               Column(
@@ -145,10 +163,15 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.favorite_border,
-                                        color: Colors.white,
-                                      ),
+                                      (widget.fav)
+                                          ? Icon(
+                                              Icons.favorite_rounded,
+                                              color: Colors.red,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_border,
+                                              color: Colors.white,
+                                            ),
                                       SizedBox(width: 8),
                                       Icon(
                                         Icons.share,
@@ -219,7 +242,6 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                 unselectedLabelColor: Colors.grey,
                 tabs: [
                   Tab(text: "Overview"),
-                  Tab(text: "Itenary"),
                   Tab(text: "Gallery"),
                 ],
               ),
@@ -240,27 +262,51 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                           children: [
                             for (int i = 0; i < 5; i++)
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 4, right: 4),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (_) {
-                                      return ImageScreen();
-                                    }));
-                                  },
-                                  child: Container(
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                'https://images.pexels.com/photos/11060852/pexels-photo-11060852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-                                            fit: BoxFit.fill),
-                                        borderRadius: BorderRadius.circular(2),
-                                        color: Colors.blue),
-                                  ),
-                                ),
-                              )
+                                  padding:
+                                      const EdgeInsets.only(left: 4, right: 4),
+                                  child: FutureBuilder(
+                                      future: links,
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 150,
+                                              height: 150,
+                                              child: Center(
+                                                child: SizedBox(
+                                                  height: 64,
+                                                  width: 64,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Colors.amber,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return InkWell(
+                                            onTap: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) {
+                                                return ImageScreen(
+                                                  link: snapshot.data![i],
+                                                );
+                                              }));
+                                            },
+                                            child: Container(
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          snapshot.data![i]),
+                                                      fit: BoxFit.fill),
+                                                  borderRadius:
+                                                      BorderRadius.circular(2),
+                                                  color: Colors.blue),
+                                            ));
+                                      }))
                           ],
                         ),
                       ),
@@ -370,7 +416,8 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                                               ?.docs[i]
                                                                   ["duration"]
                                                               .toString(),
-                                                          favourite: false,
+                                                          fav: snapshot.data
+                                                              ?.docs[i]["fav"],
                                                           heading: snapshot
                                                               .data
                                                               ?.docs[i][
@@ -404,6 +451,17 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                                               ?.docs[i][
                                                                   "packageName"]
                                                               .toString(),
+                                                          gallery: snapshot
+                                                              .data
+                                                              ?.docs[i][
+                                                                  "packageName"]
+                                                              .toString(),
+                                                          image: snapshot.data
+                                                              ?.docs[i]["image"]
+                                                              .toString(),
+                                                          maps: snapshot.data
+                                                              ?.docs[i]["image"]
+                                                              .toString(),
                                                         ),
                                                       ),
                                                     );
@@ -411,6 +469,8 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                                 },
                                                 child: PackageCard(
                                                     // trip: packages[i].packagename,
+                                                    dp: snapshot.data?.docs[i]["image"]
+                                                        .toString(),
                                                     trip: snapshot.data
                                                         ?.docs[i]["packageName"]
                                                         .toString(),
@@ -428,11 +488,9 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                                                     description: snapshot.data
                                                         ?.docs[i]["packageName"]
                                                         .toString(),
-                                                    rating: snapshot
-                                                        .data?.docs[i]["rating"]
+                                                    rating: snapshot.data?.docs[i]["rating"]
                                                         .toDouble(),
-                                                    price: snapshot.data?.docs[i]["price"]
-                                                        .toDouble(),
+                                                    price: snapshot.data?.docs[i]["price"].toDouble(),
                                                     favourite: false),
                                               )
                                           ],
@@ -516,39 +574,56 @@ class _PackageOverviewScreenState extends State<PackageOverviewScreen>
                   ),
                 )
               ]),
-              Text("Harsh"),
-              Center(
-                child: Container(
-                  child: GridView.count(
-                    scrollDirection: Axis.vertical,
-                    crossAxisCount: 3,
-                    children: [
-                      for (int i = 0; i < 32; i++)
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (_) {
-                                return ImageScreen();
-                              }));
-                            },
-                            child: Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://images.pexels.com/photos/11060852/pexels-photo-11060852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-                                      fit: BoxFit.fill),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.blue),
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
-                ),
+              FutureBuilder(
+                future: links,
+                builder: ((context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        height: 128,
+                        width: 128,
+                        child: CircularProgressIndicator(
+                          color: Colors.amber,
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: Container(
+                      child: GridView.count(
+                        scrollDirection: Axis.vertical,
+                        crossAxisCount: 3,
+                        children: [
+                          for (int i = 0; i < snapshot.data!.length; i++)
+                            Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (_) {
+                                    return ImageScreen(
+                                      link: snapshot.data![i],
+                                    );
+                                  }));
+                                },
+                                child: Container(
+                                  height: 80,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage(snapshot.data![i]),
+                                          fit: BoxFit.fill),
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.blue),
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
+                  );
+                }),
               )
             ]),
           )
@@ -584,14 +659,17 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class ImageScreen extends StatelessWidget {
-  String? link =
-      'https://images.pexels.com/photos/11060852/pexels-photo-11060852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+  String? link;
+  ImageScreen({this.link});
   @override
   Widget build(BuildContext context) {
+    // final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: InkWell(
         child: Container(
+          // height: size.height / 2,
+          // width: size.width,
           child: Center(
             child: Hero(
               tag: 'imageHero',
@@ -606,5 +684,41 @@ class ImageScreen extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+Future<List<String>> getAllImageUrls(String loc) async {
+  final ref = FirebaseStorage.instance.ref().child("/$loc");
+  final result = await ref.listAll();
+  final urls = <String>[];
+  for (var item in result.items) {
+    final url = await item.getDownloadURL();
+    print(url);
+    urls.add(url);
+  }
+  print(urls);
+  return urls;
+}
+
+Future<void> openMap(double latitude, double longitude,
+    {LaunchMode linkLaunchMode = LaunchMode.externalApplication}) async {
+  String googleUrl =
+      'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+  if (await canLaunchUrl(Uri.parse(googleUrl))) {
+    await launchUrl(Uri.parse(googleUrl), mode: linkLaunchMode);
+  } else {
+    throw 'Could not open the map.';
+  }
+}
+
+Future<void> openMapLoc(String locationName,
+    {LaunchMode linkLaunchMode = LaunchMode.externalApplication}) async {
+  String googleUrl =
+      // 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+      'https://www.google.com/maps/search/?api=1&query=$locationName';
+  if (await canLaunchUrl(Uri.parse(googleUrl))) {
+    await launchUrl(Uri.parse(googleUrl), mode: linkLaunchMode);
+  } else {
+    throw 'Could not open the map.';
   }
 }

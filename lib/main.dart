@@ -1,7 +1,9 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safarnama/screens/splash_screen.dart';
+import 'package:safarnama/utils/maps.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/package_overview_screen.dart';
 import 'screens/packages.dart';
@@ -15,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await FirebaseAppCheck.instance.activate();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
@@ -53,13 +56,17 @@ class MyApp extends StatelessWidget {
         SplashPage.routeNamed: (BuildContext context) => SplashPage(),
         HomeScreen.routeNamed: (BuildContext context) => HomeScreen(),
         PackageOverviewScreen.routeNamed: (BuildContext context) =>
-            PackageOverviewScreen(),
+            PackageOverviewScreen(
+              fav: true,
+            ),
         // CheckoutScreen.routeNamed: (BuildContext context) => CheckoutScreen(),
         BookingScreen.routeNamed: (BuildContext context) => BookingScreen(),
         ProfileScreen.routeNamed: (BuildContext context) => ProfileScreen(),
         ReferScreen.routeNamed: (BuildContext context) => ReferScreen(),
         FavouriteScreen.routeNamed: (BuildContext context) => FavouriteScreen(),
         PackagesScreen.routeNamed: (BuildContext context) => PackagesScreen(),
+        GoogleMapsScreen.routeNamed: (BuildContext context) =>
+            GoogleMapsScreen(),
       },
     );
   }

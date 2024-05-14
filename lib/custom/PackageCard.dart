@@ -10,6 +10,7 @@ class PackageCard extends StatefulWidget {
   double? rating;
   double? price;
   bool? favourite;
+  String? dp;
 
   PackageCard(
       {this.trip,
@@ -19,23 +20,21 @@ class PackageCard extends StatefulWidget {
       this.rating,
       this.price,
       this.favourite,
-      this.location});
+      this.location,
+      this.dp});
 
   @override
   State<PackageCard> createState() => _PackageCardState();
 }
 
 class _PackageCardState extends State<PackageCard> {
-  bool liked = false;
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage(
-                    'https://images.pexels.com/photos/11060852/pexels-photo-11060852.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-                fit: BoxFit.fill),
+                image: NetworkImage(widget.dp!), fit: BoxFit.fill),
             borderRadius: BorderRadius.circular(15),
             color: Colors.blue),
         width: 150,
@@ -89,18 +88,18 @@ class _PackageCardState extends State<PackageCard> {
                       // Heart Icon
                       InkWell(
                         onTap: () {
-                          (liked)
+                          (widget.favourite!)
                               ? setState(() {
-                                  liked = false;
+                                  widget.favourite = false;
                                 })
                               : setState(() {
-                                  liked = true;
+                                  widget.favourite = true;
                                 });
                         },
-                        child: (liked)
+                        child: (widget.favourite!)
                             ? Icon(
                                 Icons.favorite,
-                                color: Colors.white,
+                                color: Colors.redAccent,
                               )
                             : Icon(
                                 Icons.favorite_border,

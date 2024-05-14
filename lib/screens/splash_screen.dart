@@ -3,6 +3,7 @@ import 'package:safarnama/screens/tab_pages/booking_screen.dart';
 import 'package:safarnama/screens/tab_pages/favourite_screen.dart';
 import 'package:safarnama/screens/tab_pages/home_screen.dart';
 import 'package:safarnama/screens/tab_pages/profile_screen.dart';
+import 'package:safarnama/utils/maps.dart';
 import '../../utils/global.dart';
 
 class SplashPage extends StatefulWidget {
@@ -22,8 +23,6 @@ class _SplashPageState extends State<SplashPage> {
       case 2:
         return BookingScreen();
       case 3:
-        return HomeScreen();
-      case 4:
         return ProfileScreen();
       default:
         return HomeScreen();
@@ -41,8 +40,7 @@ class _SplashPageState extends State<SplashPage> {
               index: 1, icontab: Icons.favorite, text: "Favourites"),
           _getBottomBarItem(
               index: 2, icontab: Icons.calendar_month, text: "Bookings"),
-          _getBottomBarItem(index: 3, icontab: Icons.wallet, text: "Wallet"),
-          _getBottomBarItem(index: 4, icontab: Icons.person, text: "Account"),
+          _getBottomBarItem(index: 3, icontab: Icons.person, text: "Account"),
         ],
       ),
     );

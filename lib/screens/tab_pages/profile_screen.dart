@@ -45,14 +45,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Mallik Cheripally",
+                  "Abhishek Chaudhary",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "some.user@email.com",
+                  "8279abhi@email.com",
                   style: TextStyle(
                       color: Colors.white70,
                       fontSize: 14,

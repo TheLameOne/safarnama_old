@@ -9,6 +9,7 @@ class PlanCard extends StatelessWidget {
   double? rating;
   double? price;
   double? discount;
+  String? image;
 
   PlanCard(
       {this.duration,
@@ -16,7 +17,8 @@ class PlanCard extends StatelessWidget {
       this.description,
       this.rating,
       this.price,
-      this.discount});
+      this.discount,
+      this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,7 @@ class PlanCard extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(
-                          'https://images.pexels.com/photos/2780309/pexels-photo-2780309.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'),
-                      fit: BoxFit.fill),
+                      image: NetworkImage(image!), fit: BoxFit.fill),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               height: 100,
               width: 100,

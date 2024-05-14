@@ -7,6 +7,8 @@ class PackageModel {
   double? rating;
   double? price;
   bool? favourite;
+  String? maps;
+  String? image;
 
   PackageModel(
       {this.trip,
@@ -16,7 +18,9 @@ class PackageModel {
       this.rating,
       this.price,
       this.favourite,
-      this.location});
+      this.location,
+      this.maps,
+      this.image});
 
   PackageModel.fromJson(Map<String, dynamic> json) {
     trip = json['trip'];
@@ -27,6 +31,8 @@ class PackageModel {
     rating = json['rating'];
     price = json['price'];
     favourite = json['favourite'];
+    maps = json['maps'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +46,8 @@ class PackageModel {
     data['rating'] = rating;
     data['price'] = price;
     data['favourite'] = favourite;
+    data['maps'] = maps;
+    data['image'] = image;
     return data;
   }
 }
